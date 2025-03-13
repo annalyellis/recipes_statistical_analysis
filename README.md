@@ -37,9 +37,30 @@ At this point, I realized there were a few peculiar outliers - for example a rec
 
 ## Univariate Analysis
 INCLUDE PLOTLY PLOTS AND EXPLANATION - USE DISTRIBUTION OF COOKING TIME AND PROTEIN
+<iframe
+  src="assets/cooking_time_dist.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+<iframe
+  src="assets/protein_dist.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+
 
 ## Bivariate Analysis
 INCLUDE PLOT OF PROTEIN PDV vs. COOKING TIME and explanation
+<iframe
+  src="assets/protein_vs_time.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 ## Interesting Aggregates
 include pivot table and explanation
