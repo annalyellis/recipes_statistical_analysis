@@ -26,7 +26,14 @@ The first step I took in cleaning the dataset was creating a 'protein' column in
 
 At this point, I realized there were a few peculiar outliers - for example a recipe titled "How To Preserve a Husband" that was said to take around 1 million minutes. This sort of recipe is irrelevant for my analysis, so I filtered the recipes to include only those with a cooking time under 10 hours, as this is where the vast majority of the recipes are. The number of outliers that did not meet this criteria was about 671, about 0.0126% of the total amount of recipes. I then also realized that there were some irregularities in the protein column (a hot cocoa mix recipe with a protein PDV of 4356% does not make much sense), so I filtered the recipes to include only with under 400% PDV protein. The number of outliers which did not meet this critereia was 19, aobut 0.00106% of the total amount of recipes.
 
-NEED TO INCLUDE HEAD OF RECIPES CLEANED DATAFRAME
+|   ID   | Name                           | Minutes | Steps | Ingredients                                                                                   | Num Ingredients | Avg Rating | Protein |
+|--------|--------------------------------|---------|-------|-------------------------------------------------------------------------------------------------|----------------|------------|---------|
+| 111    | 1 brownies in the world best ever | 40      | 10    | ['bittersweet chocolate', 'unsalted butter', '...']                                      | 9                | 4.0        | 3.0     |
+| 115    | 1 in canada chocolate chip cookies | 45      | 12    | ['white sugar', 'brown sugar', 'salt', 'margar...']                                     | 11              | 5.0        | 13.0    |
+| 118    | 412 broccoli casserole                | 40      | 6      | ['frozen broccoli cuts', 'cream of chicken sou...']                                 | 9                | 5.0        | 22.0    |
+| 119    | millionaire pound cake                | 120    | 7      | ['butter', 'sugar', 'eggs', 'all-purpose flour...']                                  | 7                | 5.0        | 20.0    |
+| 125    | 2000 meatloaf                                | 90      | 17    | ['meatloaf mixture', 'unsmoked bacon', 'goat c...']                               | 13              | 5.0        | 29.0    |
+
 
 ## Univariate Analysis
 INCLUDE PLOTLY PLOTS AND EXPLANATION - USE DISTRIBUTION OF COOKING TIME AND PROTEIN
