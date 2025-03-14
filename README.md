@@ -70,7 +70,7 @@ Due to a large amount of data, this plot makes it difficult to see a relationshi
 A density plot reveals the large amount of data centered around low amounts of protein.
 
 ### Interesting Aggregates
-Although the scatterplot is somewhat inconclusive, finding the average (mean and median) protein PDV in each time range reveals that avg protein PDV is strictly increasing as time increases. 
+Although the scatterplot is somewhat inconclusive, finding the average (mean and median) protein PDV in each time range reveals that the average protein PDV is strictly increasing as time increases. 
 
 | time_bin  | mean protein | median protein | count protein |
 |-----------|--------------|----------------|---------------|
@@ -88,7 +88,7 @@ Although the scatterplot is somewhat inconclusive, finding the average (mean and
 ### Dependency of the Description Column
 **Minutes:** Using a permuation test with the absolute difference in the mean minutes of recipes including a description and recipes not including a description as the test statistic, I found that the missingness of description was not dependent the amount of time it takes to prepare the recipe, as my resulting p-value was very high (0.6). I used a significance level of 0.05. 
 
-**Contributer ID:** Using a permutation test with the total variation distance as the test statistic, I found that the missingness of description was dependent on contributer ID, as my resulting p-value was very low (0.0). Intuitively, this makes sense, as people who don't write a description for a recipe likely don't write descriptions for their other recipes as well. Below the empirical distribution of the null distribution is pictured with the observed tvd. I used a significance level of 0.05.
+**Contributer ID:** Using a permutation test with the total variation distance (TVD) as the test statistic, I found that the missingness of description was dependent on contributer ID, as my resulting p-value was very low (0.0). Intuitively, this makes sense, as people who don't write a description for a recipe likely don't write descriptions for their other recipes as well. Below the empirical distribution of the null distribution is pictured with the observed TVD. I used a significance level of 0.05.
 
 <iframe
   src="assets/empirical_distribution_of_null_missingness.html"
@@ -104,9 +104,9 @@ Although the scatterplot is somewhat inconclusive, finding the average (mean and
 
 **Alternative Hypothesis**: The average amount of protein in recipes that take over 40 minutes is greater than the average amount of protein in recipes that take less than or equal to 40 minutes.
 
-To explore this question, I have used a permuation test with a significance level of 0.05. A permutation test works well in this situation because it is non-parametric, meaning it doesn't rely on assumptions about the underlying distribution. Simulating the null hypothesis by randomly shuffling the labels allows us to discover whether the group assignment is arbitrary or not. 
+To explore this question, I have used a permuation test with a significance level of 0.05. A permutation is effective in this situation because it is non-parametric, meaning it doesn't rely on assumptions about the underlying distribution. Simulating the null hypothesis by randomly shuffling the labels allows us to discover whether the group assignment is arbitrary or not. 
 
-My test statistic is the difference in mean protein PDV in recipes greater that take greater than 40 minutes to prepare and recipes that take less than or equal to 40 minutes to prepare. The difference in means is an effective test statistic because I intend to compare averages.
+My test statistic is the difference in mean protein PDV in recipes greater that take greater than 40 minutes to prepare and mean protein PDV in recipes that take less than or equal to 40 minutes to prepare. The difference in means is an effective test statistic because I intend to compare averages.
 
 Because my test resulted in an extremely low p-value of 0.0, I reject the null hypothesis. 
 
@@ -122,7 +122,7 @@ Because my test resulted in an extremely low p-value of 0.0, I reject the null h
 ## Framing a Prediction Problem
 **Prediction Problem:** I aim to predict the time required to prepare a recipe.
 
-This is a regression problem with the response variable being the time in minutes. I chose this because the efficiency of cooking is important to me - I enjoy cooking, but I am also busy. I want to cook efficient recipes. 
+This is a regression problem with the response variable being the time in minutes. I chose this because the efficiency of cooking is important to me - I enjoy cooking, but I am also busy. I wish to cook efficient recipes. 
 
 I will use R^2 as a metric to evaluate my model. R^2 is effective in this case because it helps measure how well my model explains variation in the response variable (the time it takes to prepare a recipe).
 
@@ -132,3 +132,13 @@ This model uses an sklearn pipeline to predict cooking times for recipes based o
 ## Final Model
 
 ## Fairness Analysis
+- Group X: recipes with less than 400 calories
+- Group Y: recipes with greater than 400 calories
+
+The evaluation metric that I used is root mean squared error (RMSE).
+
+**Null Hypothesis:** The model is fair. Its RMSE for high calorie and low calorie recipes are roughtly the same, and any differences are due to random chance
+
+**Alternative Hypothesis:** The model is unfair. Its RMSE for high calorie recipies is lower than its precision for low calorie recipes.
+
+The test statistic is the difference in RMSE and the significance level is 0.05. With a p-value of 0.004, I reject the null hypothesis.
