@@ -86,14 +86,14 @@ Although the scatterplot is somewhat inconclusive, finding the average (mean and
 
 ## Missingness Dependency
 ### Dependency of the Description Column
-**Minutes:** Using a permuation test with the absolute difference in the mean minutes of recipes including a description and recipes not including a description as the test statistic, I found that the missingness of description was not dependent the amount of time it takes to prepare the recipe, as my resulting p-value was very high (0.6). I used a significance level of 0.05. 
+**Minutes:** Using a permuation test with the absolute difference in the mean minutes of recipes including a description and recipes not including a description as the test statistic, I found that the missingness of description was not dependent the amount of time it takes to prepare the recipe, as my resulting p-value was very high (0.485). I used a significance level of 0.05. 
 
 **Contributer ID:** Using a permutation test with the total variation distance (TVD) as the test statistic, I found that the missingness of description was dependent on contributer ID, as my resulting p-value was very low (0.0). Intuitively, this makes sense, as people who don't write a description for a recipe likely don't write descriptions for their other recipes as well. Below the empirical distribution of the null distribution is pictured with the observed TVD. I used a significance level of 0.05.
 
 <iframe
   src="assets/empirical_distribution_of_null_missingness.html"
   width="800"
-  height="500"
+  height="600"
   frameborder="0"
 ></iframe>
 
@@ -127,9 +127,37 @@ This is a regression problem with the response variable being the time in minute
 I will use R^2 as a metric to evaluate my model. R^2 is effective in this case because it helps measure how well my model explains variation in the response variable (the time it takes to prepare a recipe).
 
 ## Baseline Model
-This model uses an sklearn pipeline to predict cooking times for recipes based on two quantitative features, the number of steps and calorie content. The pipeline first applies a log transformation to all columns (both features and the target variable) to handle skewness in the data. It then fits a Linear Regression model to predict the transformed cooking time. The dataset is split into training and testing sets, with the model trained on the training data and evaluated using the R² score. Finally, the model's performance is assessed on the test set, providing the test R² score. The test R^2 score is 0.1903, which is quite low. Because of this low R^2, the baseline model is not particularly strong.
+This model uses an sklearn pipeline to predict cooking times for recipes based on two quantitative features, the number of steps and calorie content. The pipeline first applies a log transformation to all columns (both features and the target variable) to handle skewness in the data. It then fits a Linear Regression model to predict the transformed cooking time. The dataset is split into training and testing sets, with the model trained on the training data and evaluated using the R² score. Finally, the model's performance is assessed on the test set, providing the test R² score. The test R² score is 0.1903, which is quite low. Because of this low R², the baseline model is not particularly strong.
 
 ## Final Model
+### Features
+**Average Words Per Step:**
+
+**"Easy" Tags:**
+
+**Description Length:**
+
+Number of Steps: This feature remains from the previous model, as the number of steps in pretty indicative of how long a recipe will take.
+
+Calories (PDV): This feature remains from the previous model, as a recipe that has more calories will often result in more food, which might take longer to make.
+
+### Hist Gradient Boosting Regressor
+
+### Best Performing Hyperparameters
+ - **model learning rate:** 0.1
+ - **model max depth:** 3
+ - **model max iterations:** 100
+ - **model min samples leaf:** 2
+
+### Improvement
+The R² score from this model 
+
+<iframe
+  src="assets/model_pred_vs_actual.html"
+  width="800"
+  height="400"
+  frameborder="0"
+></iframe>
 
 ## Fairness Analysis
 - Group X: recipes with less than 400 calories
@@ -137,8 +165,15 @@ This model uses an sklearn pipeline to predict cooking times for recipes based o
 
 The evaluation metric that I used is root mean squared error (RMSE).
 
-**Null Hypothesis:** The model is fair. Its RMSE for high calorie and low calorie recipes are roughtly the same, and any differences are due to random chance
+**Null Hypothesis:** The model is fair. Its RMSE for high calorie and low calorie recipes are roughtly the same, and any differences are due to random chance.
 
 **Alternative Hypothesis:** The model is unfair. Its RMSE for high calorie recipies is lower than its precision for low calorie recipes.
 
-The test statistic is the difference in RMSE and the significance level is 0.05. With a p-value of 0.004, I reject the null hypothesis.
+The test statistic is the difference in RMSE and the significance level is 0.05. With a p-value of 0.001, I reject the null hypothesis.
+
+<iframe
+  src="assets/distribution_null_rmse_diff.html"
+  width="800"
+  height="400"
+  frameborder="0"
+></iframe>
