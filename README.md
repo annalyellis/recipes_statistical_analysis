@@ -47,7 +47,7 @@ Cooking times are predominantly relatively short, as shown by the skewed distrib
 <iframe
   src="assets/protein_dist.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 The heavily skewed distribution reveals that the vast majority of recipes do not have that much protein. Most commonly, recipes contain less than 10 PDV of protein.
@@ -57,7 +57,7 @@ The heavily skewed distribution reveals that the vast majority of recipes do not
 <iframe
   src="assets/protein_vs_time.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 Due to a large amount of data, this plot makes it difficult to see a relationship between protein and cooking time. The least squares line reveals that there is, in fact, a positive relationship.
@@ -78,7 +78,7 @@ Although the scatterplot is somewhat inconclusive, finding the average (mean, me
 
 # Assessment of Missingness
 ## Not Missing at Random (NMAR) Analysis
- The columns with null values are 'name', 'description', and 'avg_rating'. It seems that none of them are likely to be NMAR as 'name' is likely MCAR, while description and avg_rating could easily be linked to other columns in the dataset. For example, the average rating on recipes that have less steps or take less time could be higher as people are more likely to complete the recipe efficiently and feel satisified with their results. The description on less complex recipes with less steps might be missing as simple recipes may not require a description.
+ The columns with null values are 'name', 'description', and 'avg_rating'. It seems that none of them are likely to be NMAR as 'name' is likely MCAR, while 'description' and 'avg_rating' could easily be linked to other columns in the dataset. For example, the average rating on recipes that have less steps or take less time could be higher as people are more likely to complete the recipe efficiently and feel satisified with their results. The description on less complex recipes with less steps might be missing as simple recipes may not require a description.
 
  ## Missingness Dependency
 
