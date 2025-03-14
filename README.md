@@ -35,14 +35,14 @@ At this point, I realized there were a few peculiar outliers - for example a rec
 | 125    | 2000 meatloaf                                | 90      | 17    | ['meatloaf mixture', 'unsmoked bacon', 'goat c...']                               | 13              | 5.0        | 29.0    |
 
 
-## Univariate Analysis
-INCLUDE PLOTLY PLOTS AND EXPLANATION - USE DISTRIBUTION OF COOKING TIME AND PROTEIN
+### Univariate Analysis
 <iframe
   src="assets/cooking_time_dist.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
+Cooking times are predominantly relatively short, as shown by the skewed distribution. The most range for a cooking time to be in is 20-39 minutes.
 
 <iframe
   src="assets/protein_dist.html"
@@ -50,21 +50,36 @@ INCLUDE PLOTLY PLOTS AND EXPLANATION - USE DISTRIBUTION OF COOKING TIME AND PROT
   height="600"
   frameborder="0"
 ></iframe>
+The heavily skewed distribution reveals that the vast majority of recipes do not have that much protein. Most commonly, recipes contain less than 10 PDV of protein.
 
 
-
-## Bivariate Analysis
-INCLUDE PLOT OF PROTEIN PDV vs. COOKING TIME and explanation
+### Bivariate Analysis
 <iframe
   src="assets/protein_vs_time.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
+Due to a large amount of data, this plot makes it difficult to see a relationship between protein and cooking time. The least squares line reveals that there is, in fact, a positive relationship.
 
-## Interesting Aggregates
-include pivot table and explanation
+![Density Plot of Protein PDV vs. Cooking Time](assets/seaborn_plot.png)
+This density plot reveals the large amount of data centered around low amounts of protein.
+
+### Interesting Aggregates
+Although the scatterplot is somewhat inconclusive, finding the average (mean, median, mode) amount of protein in each time range reveals that protein is strictly increasing as time increases. 
+
+| time_bin  | mean protein | median protein | count protein |
+|-----------|--------------|----------------|---------------|
+| 0-10 min  | 13.99        | 6.0            | 11043         |
+| 11-30 min | 30.00        | 18.0           | 26268         |
+| 31-60 min | 34.77        | 22.0           | 25415         |
+| 61-120 min| 40.03        | 24.0           | 12328         |
+| 120+ min  | 52.26        | 33.0           | 8726          |
 
 # Assessment of Missingness
+## Not Missing at Random (NMAR) Analysis
+ The columns with null values are 'name', 'description', and 'avg_rating'. It seems that none of them are likely to be NMAR as 'name' is likely MCAR, while description and avg_rating could easily be linked to other columns in the dataset. For example, the average rating on recipes that have less steps or take less time could be higher as people are more likely to complete the recipe efficiently and feel satisified with their results. The description on less complex recipes with less steps might be missing as simple recipes may not require a description.
+
+ ## Missingness Dependency
 
 
