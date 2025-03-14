@@ -72,7 +72,7 @@ The heavily skewed distribution reveals that the vast majority of recipes do not
 ></iframe>
 Due to a large amount of data, this plot makes it difficult to see a relationship between protein and cooking time. The least squares line reveals that there is, in fact, a positive relationship. I have restricted this plot to where the data is most highly concentrated in terms of minutes (less than 120).
 
-<img src="assets/seaborn_plot.png" alt="Density Plot of Protein PDV vs. Cooking time" width="500" height="600">
+<img src="assets/seaborn_plot.png" alt="Density Plot of Protein PDV vs. Cooking time" width="400" height="500">
 A density plot reveals the large amount of data centered around low amounts of protein.
 
 ### Interesting Aggregates
