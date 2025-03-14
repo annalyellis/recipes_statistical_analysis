@@ -1,5 +1,4 @@
 # Flavors of Data: A Recipe Analytics Project
-#### Annaly Ellis
 ## Introduction:
 
 This dataset contains a collectin of recipes from Food.com, originally gathered and used in a research paper on recommender systems. It consists of two primary components: recipes and interactions. The recipes dataset includes details such as ingredients, preparation time, and nutrition information, while the interactions dataset provides a record of reviews and ratings for the recipes. Due to the large quantity of data, these data are a subset of the original dataset, focusing on recipes and reviews posted since 2008. By merging the recipes and interactions datasets, one can analyze the popularity of recipes and identify trends in recipe charactersitics. The data provides valuable insight into user preferences, rating behaviours, and recipe features, making it a useful resource to explore recipe trends.
@@ -141,7 +140,7 @@ This model uses an sklearn pipeline to predict cooking times for recipes based o
 
 **"Easy" Tags:** This feature was engineered using an Ski-kit learn FunctionTransformer to find recipe tags that include "easy". Recipes that are tagged as "easy" likely take less time to prepare. 
 
-**Description Length:**
+**Description Length:** This feature was created by finding the length of the description. A longer description might signify a more complicated recipe which could take more time to prepare.
 
 Number of Steps: This feature remains from the previous model, as the number of steps is quite indicative of how long a recipe will take to prepare.
 
@@ -174,7 +173,7 @@ The evaluation metric that I used is root mean squared error (RMSE).
 
 **Null Hypothesis:** The model is fair. Its RMSE for high calorie and low calorie recipes are roughtly the same, and any differences are due to random chance.
 
-**Alternative Hypothesis:** The model is unfair. Its RMSE for high calorie recipies is lower than its precision for low calorie recipes.
+**Alternative Hypothesis:** The model is unfair. Its RMSE for high calorie recipes is lower than its precision for low calorie recipes.
 
 The test statistic is the difference in RMSE and the significance level is 0.05. With a p-value of 0.001, I reject the null hypothesis.
 
