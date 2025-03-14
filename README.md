@@ -1,7 +1,7 @@
-# Statistical Analysis of Recipes
+# Flavors of Data: A Recipe Analytics Project
 ## Introduction:
 
-This dataset contains a collectin of recipes from Food.com, originally gathered and used in a research paper on recommender systems. It consists of two primary components: recipes and interactions. The recipes dataset includes details such as ingredients, preparation time, and nutrition information, while the interactions dataset provides a record of reviews and ratings for the recipes. Due to the large quantity of data, these data are a subset of the original dataset, focusing on recipes and reviews posted since 2008. By merging the recipes and interactions datasets, one can analyze the popularity of recipes and identify trends in recipe charactersitics. The data provides valuable insightinto user preferences, rating behaviours, and recipe features, making it a useful resource to explore recipe trends.
+This dataset contains a collectin of recipes from Food.com, originally gathered and used in a research paper on recommender systems. It consists of two primary components: recipes and interactions. The recipes dataset includes details such as ingredients, preparation time, and nutrition information, while the interactions dataset provides a record of reviews and ratings for the recipes. Due to the large quantity of data, these data are a subset of the original dataset, focusing on recipes and reviews posted since 2008. By merging the recipes and interactions datasets, one can analyze the popularity of recipes and identify trends in recipe charactersitics. The data provides valuable insight into user preferences, rating behaviours, and recipe features, making it a useful resource to explore recipe trends.
 
 ### Information About the Dataset:
 - Number of rows in the recipes dataset: 83782
@@ -18,7 +18,7 @@ total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat
 **Note:** The nutrition column contains lots of valuable information, for example I have extracted the protein (PDV) from the nutrition column and created a protein
 column
 
-One of the most relevant things to people when they choose a recipe to create is the amount of time it will take. Personally, if a recipe is going to take a lot of time I simply will not make it and choose something else. I also find it difficult to consume enough protein sometimes, as I have noticied that it often takes longer to make meals that have large quantities of protein in them. This begs the question, what is the relationship between the protein (as a percentage of daily value) a recipe has, and the cooking time of the recipe?
+One of the most relevant things to people when they choose a recipe to create is the amount of time it will take. Personally, if a recipe is going to take a lot of time I simply will not make it and choose something else. I also find it difficult to consume enough protein sometimes, as I have noticied that it often takes longer to make meals that have large quantities of protein in them. This begs the question, **what is the relationship between the protein (as a percentage of daily value) a recipe has, and the amount of time it takes to prepare the recipe**?
 
 ## Data Cleaning and Exploratory Analysis
 ### Data Cleaning
@@ -39,10 +39,11 @@ At this point, I realized there were a few peculiar outliers - for example a rec
 <iframe
   src="assets/cooking_time_dist.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 Cooking times are predominantly relatively short, as shown by the skewed distribution. The most range for a cooking time to be in is 20-39 minutes.
+
 
 <iframe
   src="assets/protein_dist.html"
@@ -53,6 +54,7 @@ Cooking times are predominantly relatively short, as shown by the skewed distrib
 The heavily skewed distribution reveals that the vast majority of recipes do not have that much protein. Most commonly, recipes contain less than 10 PDV of protein.
 
 
+
 ### Bivariate Analysis
 <iframe
   src="assets/protein_vs_time.html"
@@ -60,13 +62,13 @@ The heavily skewed distribution reveals that the vast majority of recipes do not
   height="400"
   frameborder="0"
 ></iframe>
-Due to a large amount of data, this plot makes it difficult to see a relationship between protein and cooking time. The least squares line reveals that there is, in fact, a positive relationship.
+Due to a large amount of data, this plot makes it difficult to see a relationship between protein and cooking time. The least squares line reveals that there is, in fact, a positive relationship. I have restricted this plot to where the data is most highly concentrated in terms of minutes (less than 120).
 
 ![Density Plot of Protein PDV vs. Cooking Time](assets/seaborn_plot.png)
 This density plot reveals the large amount of data centered around low amounts of protein.
 
 ### Interesting Aggregates
-Although the scatterplot is somewhat inconclusive, finding the average (mean, median, mode) amount of protein in each time range reveals that protein is strictly increasing as time increases. 
+Although the scatterplot is somewhat inconclusive, finding the average (mean, median, mode) protein PDV in each time range reveals that avg protein PDV is strictly increasing as time increases. 
 
 | time_bin  | mean protein | median protein | count protein |
 |-----------|--------------|----------------|---------------|
@@ -81,5 +83,47 @@ Although the scatterplot is somewhat inconclusive, finding the average (mean, me
  The columns with null values are 'name', 'description', and 'avg_rating'. It seems that none of them are likely to be NMAR as 'name' is likely MCAR, while 'description' and 'avg_rating' could easily be linked to other columns in the dataset. For example, the average rating on recipes that have less steps or take less time could be higher as people are more likely to complete the recipe efficiently and feel satisified with their results. The description on less complex recipes with less steps might be missing as simple recipes may not require a description.
 
  ## Missingness Dependency
+ ### Dependency of the Description Column
+**Minutes:** Using a permuation test with the absolute difference in the mean minutes of recipes including a description and recipes not including a description as the test statistic, I found that the missingness of description was not dependent the amount of time it takes to prepare the recipe, as my resulting p-value was very high (0.6). I used a significance level of 0.05. 
+
+**Contributer ID:** Using a permutation test with the total variation distance as the test statistic, I found that the missingness of description was dependent on contributer ID, as my resulting p-value was very low (0.0). Intuitively, this makes sense, as people who don't write a description for a recipe likely don't write descriptions for their other recipes as well. Below the empirical distribution of the null distribution is pictured with the observed tvd. I used a significance level of 0.05.
+
+<iframe
+  src="assets/empirical_distribution_of_null_missingness.html"
+  width="800"
+  height="400"
+  frameborder="0"
+></iframe>
+
+# Hypothesis Testing
+**What is the relationship between the protein (as a percentage of daily value) a recipe has, and the amount of time it takes to prepare the recipe?**
+
+**Null Hypothesis:** The average amount of protein in recipes that take less than or equal to 40 minutes is the same as the average amount of protein in recipes that take over 40 minutes.
+
+**Alternative Hypothesis**: The average amount of protein in recipes that take over 40 minutes is greater than the average amount of protein in recipes that take less than or equal to 40 minutes.
+
+To explore this question, I have used a permuation test with a significance level of 0.05. A permutation test works well in this situation because it is non-parametric, meaning it doesn't rely on assumptions about the underlying distribution. Simulating the null hypothesis by randomly shuffling the labels allows us to discover whether the group assignment is arbitrary or not. 
+
+My test statistic is the difference in mean protein PDV in recipes greater that take greater than 40 minutes to prepare and recipes that take less than or equal to 40 minutes to prepare. The difference in means is an effective test statistic because I intend to compare averages.
+
+Because my test resulted in an extremely low p-value of 0.0, I reject the null hypothesis. 
+
+**Note:** Due to the skewed distribution of the data, I am using a subset of the original dataset where the minutes are less than 120 for the purposes of this test.
+
+<iframe
+  src="assets/distribution_of_null_ht.html"
+  width="800"
+  height="400"
+  frameborder="0"
+></iframe>
+
+## Framing a Prediction Problem
+**Prediction Problem:** I aim to predict the time required to prepare a recipe.
 
 
+
+## Baseline Model
+
+## Final Model
+
+## Fairness Analysis
