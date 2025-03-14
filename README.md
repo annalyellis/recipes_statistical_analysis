@@ -1,4 +1,5 @@
 # Flavors of Data: A Recipe Analytics Project
+#### Annaly Ellis
 ## Introduction:
 
 This dataset contains a collectin of recipes from Food.com, originally gathered and used in a research paper on recommender systems. It consists of two primary components: recipes and interactions. The recipes dataset includes details such as ingredients, preparation time, and nutrition information, while the interactions dataset provides a record of reviews and ratings for the recipes. Due to the large quantity of data, these data are a subset of the original dataset, focusing on recipes and reviews posted since 2008. By merging the recipes and interactions datasets, one can analyze the popularity of recipes and identify trends in recipe charactersitics. The data provides valuable insight into user preferences, rating behaviours, and recipe features, making it a useful resource to explore recipe trends.
@@ -127,21 +128,22 @@ This is a regression problem with the response variable being the time in minute
 I will use R^2 as a metric to evaluate my model. R^2 is effective in this case because it helps measure how well my model explains variation in the response variable (the time it takes to prepare a recipe).
 
 ## Baseline Model
-This model uses an sklearn pipeline to predict cooking times for recipes based on two quantitative features, the number of steps and calorie content. The pipeline first applies a log transformation to all columns (both features and the target variable) to handle skewness in the data. It then fits a Linear Regression model to predict the transformed cooking time. The dataset is split into training and testing sets, with the model trained on the training data and evaluated using the R² score. Finally, the model's performance is assessed on the test set, providing the test R² score. The test R² score is 0.1903, which is quite low. Because of this low R², the baseline model is not particularly strong.
+This model uses an sklearn pipeline to predict cooking times for recipes based on two quantitative features, the number of steps and calorie content. The pipeline first applies a log transformation to all columns (both features and the target variable) to handle skewness in the data. It then fits a Linear Regression model to predict the transformed cooking time. The dataset is split into training and testing sets, with the model trained on the training data and evaluated using the R² score. Finally, the model's performance is assessed on the test set, providing the test R² score. The test R² score is 0.2129, which is quite low. Because of this low R², the baseline model is not particularly strong.
 
 ## Final Model
 ### Features
-**Average Words Per Step:**
+**Average Words Per Step:** This feature was engineered using an Ski-kit learn FunctionTransformer to find the mean amount of words per step in a recipe. The average words per step could suggest the preparation time of a recipe, as more things to do per step could signifiy a more complicated, and thus more time consuming, recipe.
 
-**"Easy" Tags:**
+**"Easy" Tags:** This feature was engineered using an Ski-kit learn FunctionTransformer to find recipe tags that include "easy". Recipes that are tagged as "easy" likely take less time to prepare. 
 
 **Description Length:**
 
-Number of Steps: This feature remains from the previous model, as the number of steps in pretty indicative of how long a recipe will take.
+Number of Steps: This feature remains from the previous model, as the number of steps is quite indicative of how long a recipe will take to prepare.
 
-Calories (PDV): This feature remains from the previous model, as a recipe that has more calories will often result in more food, which might take longer to make.
+Calories (PDV): This feature remains from the previous model, as a recipe that has more calories will often result in more food, which might take longer to prepare.
 
-### Hist Gradient Boosting Regressor
+### HistGradientBoostingRegressor
+The HistGradientBoostingRegressor algorithm uses the gradient of the loss function to guide the training process, iteratively building decision trees that minimize the prediction errors. It is histogram-based, meaning the algorithm groups the feature values into bins reducing the computational complexity.
 
 ### Best Performing Hyperparameters
  - **model learning rate:** 0.1
@@ -150,7 +152,7 @@ Calories (PDV): This feature remains from the previous model, as a recipe that h
  - **model min samples leaf:** 2
 
 ### Improvement
-The R² score from this model 
+The R² score from this model is 0.2431, which is an improvement from the baseline model of about 0.0302. This model explains 3.02% more of the variance in minutes compared to my baseline model.
 
 <iframe
   src="assets/model_pred_vs_actual.html"
