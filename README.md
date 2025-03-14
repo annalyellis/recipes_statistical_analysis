@@ -15,9 +15,13 @@ This dataset contains a collectin of recipes from Food.com, originally gathered 
 - 'nutrition' - Nutrition information in the form [calories (#), 
 total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat 
 (PDV), carbohydrates (PDV)]; PDV stands for “percentage of daily value”
+- 'steps' - text for recipe steps, in order
+- 'tags' - Food.com tags for a recipe
+- 'description' - user-provided description
+- 'contributer_id' - user ID who submitted this recipe
+- 'avg_rating' - the average rating per recipe
 
-**Note:** The nutrition column contains lots of valuable information, for example I have extracted the protein (PDV) from the nutrition column and created a protein
-column
+**Note:** The nutrition column contains lots of valuable information, for example I have extracted the protein (PDV) from the nutrition column and created a protein column. 
 
 One of the most relevant things to people when they choose a recipe to create is the amount of time it will take. Personally, if a recipe is going to take a lot of time I simply will not make it and choose something else. Additionally, at times I have found it difficult to consume enough protein, as I have noticed that it often takes longer to make meals that have large quantities of protein in them. This begs the question, **what is the relationship between the protein (as a percentage of daily value) a recipe has, and the amount of time it takes to prepare the recipe**?
 
@@ -27,15 +31,16 @@ The first step I took in cleaning the dataset was creating a 'protein' column in
 
 At this point, I realized there were a few peculiar outliers - for example a recipe titled "How To Preserve a Husband" that was said to take around 1 million minutes. This sort of recipe is irrelevant for my analysis, so I filtered the recipes to include only those with a cooking time under 10 hours, as this is where the vast majority of the recipes are. The number of outliers that did not meet this criteria was about 671, about 0.0126% of the total amount of recipes. I then also realized that there were some irregularities in the protein column (a hot cocoa mix recipe with a protein PDV of 4356% does not make much sense), so I filtered the recipes to include only with under 400% PDV protein. The number of outliers which did not meet this critereia was 19, aobut 0.00106% of the total amount of recipes.
 
-Pictured below is the cleaned recipes dataset.
+Pictured below is the first five rows of the cleaned recipes dataset, showing only the most relevant columns
 
-|   ID   | Name                           | Minutes | Steps | Ingredients                                                                                   | Num Ingredients | Avg Rating | Protein |
-|--------|--------------------------------|---------|-------|-------------------------------------------------------------------------------------------------|----------------|------------|---------|
-| 111    | 1 brownies in the world best ever | 40      | 10    | ['bittersweet chocolate', 'unsalted butter', '...']                                      | 9                | 4.0        | 3.0     |
-| 115    | 1 in canada chocolate chip cookies | 45      | 12    | ['white sugar', 'brown sugar', 'salt', 'margar...']                                     | 11              | 5.0        | 13.0    |
-| 118    | 412 broccoli casserole                | 40      | 6      | ['frozen broccoli cuts', 'cream of chicken sou...']                                 | 9                | 5.0        | 22.0    |
-| 119    | millionaire pound cake                | 120    | 7      | ['butter', 'sugar', 'eggs', 'all-purpose flour...']                                  | 7                | 5.0        | 20.0    |
-| 125    | 2000 meatloaf                                | 90      | 17    | ['meatloaf mixture', 'unsmoked bacon', 'goat c...']                               | 13              | 5.0        | 29.0    |
+| ID  | Name                          | Minutes | Contributor ID | Nutrition                           | Steps                                         | Description                                  | Avg Rating | Protein |
+|-----|--------------------------------|---------|----------------|---------------------------------|------------------------------------------------|------------------------------------------------|------------|-----------|
+| 111 | 1 brownies in the world best ever | 40        | 985201              | [138.4, 10.0, 50.0, 3.0, 3.0, 19.0, 6.0] | [heat the oven to 350f and arrange the rack in...] | these are the most; chocolatey, moist, rich, d... | 4.0             | 3.0        |
+| 115 | 1 in canada chocolate chip cookies | 45        | 1848091            | [595.1, 46.0, 211.0, 22.0, 13.0, 51.0, 26.0] | [pre-heat oven the 350 degrees f, in a mixing...] | this is the recipe that we use at my school ca... | 5.0             | 13.0      |
+| 118 | 412 broccoli casserole        | 40        | 50969                | [194.8, 20.0, 6.0, 32.0, 22.0, 36.0, 3.0] | [preheat oven to 350 degrees, spray a 2 quart...] | since there are already 411 recipes for brocco... | 5.0             | 22.0      |
+| 119 | millionaire pound cake        | 120      | 461724              | [878.3, 63.0, 326.0, 13.0, 20.0, 123.0, 39.0] | [freheat the oven to 300 degrees, grease a 10-...] | why a millionaire pound cake? because it's su... | 5.0             | 20.0      |
+| 125 | 2000 meatloaf                     | 90        | 2202916            | [267.0, 30.0, 12.0, 12.0, 29.0, 48.0, 2.0] | [pan fry bacon, and set aside on a paper towe...] | ready, set, cook! special edition contest entr... | 5.0             | 29.0      |
+
 
 
 ### Univariate Analysis
