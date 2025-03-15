@@ -1,7 +1,7 @@
 # Flavors of Data: A Recipe Analytics Project
 ## Introduction:
 
-This dataset contains a collectin of recipes from Food.com, originally gathered and used in a research paper on recommender systems. It consists of two primary components: recipes and interactions. The recipes dataset includes details such as ingredients, preparation time, and nutrition information, while the interactions dataset provides a record of reviews and ratings for the recipes. Due to the large quantity of data, these data are a subset of the original dataset, focusing on recipes and reviews posted since 2008. By merging the recipes and interactions datasets, one can analyze the popularity of recipes and identify trends in recipe charactersitics. The data provides valuable insight into user preferences, rating behaviours, and recipe features, making it a useful resource to explore recipe trends.
+This dataset contains a collection of recipes from Food.com, originally gathered and used in a research paper on recommender systems. It consists of two primary components: recipes and interactions. The recipes dataset includes details such as ingredients, preparation time, and nutrition information, while the interactions dataset provides a record of reviews and ratings for the recipes. Due to the large quantity of data, these data are a subset of the original dataset, focusing on recipes and reviews posted since 2008. By merging the recipes and interactions datasets, one can analyze the popularity of recipes and identify trends in recipe charactersitics. The data provides valuable insight into user preferences, rating behaviours, and recipe features, making it a useful resource to explore recipe trends.
 
 ### Information About the Dataset:
 - Number of rows in the recipes dataset: 83782
@@ -26,9 +26,9 @@ One of the most relevant things to people when they choose a recipe to create is
 
 ## Data Cleaning and Exploratory Analysis
 ### Data Cleaning
-The first step I took in cleaning the dataset was creating a 'protein' column in my dataset, as this would become relevant for answering my question on the relationship between protein and time it takes to prepare a recipe. In order to do so, I first turned all of the values in the nutrition column into lists and turned the ints into floats in the lists. I then created a protein column by getting the fourth element of each list in the nutrition column. 
+The first step I took in cleaning the dataset was creating a 'protein' column in my dataset, as this would become relevant for answering my question on the relationship between protein and time it takes to prepare a recipe. In order to do so, I first turned all of the values in the nutrition column into lists and turned the ints into floats in the lists. I then created a protein column by extracting the fourth element of each list in the nutrition column. 
 
-At this point, I realized there were a few peculiar outliers - for example a recipe titled "How To Preserve a Husband" that was said to take around 1 million minutes. This sort of recipe is irrelevant for my analysis, so I filtered the recipes to include only those with a cooking time under 10 hours, as this is where the vast majority of the recipes are. The number of outliers that did not meet this criteria was about 671, about 0.0126% of the total amount of recipes. I then also realized that there were some irregularities in the protein column (a hot cocoa mix recipe with a protein PDV of 4356% does not make much sense), so I filtered the recipes to include only with under 400% PDV protein. The number of outliers which did not meet this critereia was 19, aobut 0.00106% of the total amount of recipes.
+At this point, I realized there were a few peculiar outliers - for example a recipe titled "How To Preserve a Husband" that was said to take around 1 million minutes. This sort of recipe is irrelevant for my analysis, so I filtered the recipes to include only those with a cooking time under 10 hours, as this is where the vast majority of the recipes are. The number of outliers that did not meet this criteria was about 671, about 0.0126% of the total amount of recipes. I then also realized that there were some irregularities in the protein column (a hot cocoa mix recipe with a protein PDV of 4356% does not make much sense), so I filtered the recipes to include only those with under 400% PDV protein. The number of outliers which did not meet this criteria was 19, about 0.00106% of the total amount of recipes.
 
 Pictured below is the first five rows of the cleaned recipes dataset, showing only the most relevant columns
 
@@ -49,7 +49,7 @@ Pictured below is the first five rows of the cleaned recipes dataset, showing on
   height="400"
   frameborder="0"
 ></iframe>
-Cooking times are predominantly relatively short, as shown by the skewed distribution. The most range for a cooking time to be in is 20-39 minutes.
+Cooking times are predominantly relatively short, as shown by the skewed distribution. The most frequent range for a cooking time to be in is 20-39 minutes.
 
 
 <iframe
@@ -79,11 +79,11 @@ Although the scatterplot is somewhat inconclusive, finding the average (mean and
 
 | time_bin  | mean protein | median protein | count protein |
 |-----------|--------------|----------------|---------------|
-| 0-10 min  | 13.99        | 6.0            | 11043         |
-| 11-30 min | 30.00        | 18.0           | 26268         |
-| 31-60 min | 34.77        | 22.0           | 25415         |
-| 61-120 min| 40.03        | 24.0           | 12328         |
-| 120+ min  | 52.26        | 33.0           | 8726          |
+| 0-10 min  | 13.37        | 6.0            | 11043         |
+| 11-30 min | 29.57        | 18.0           | 26254         |
+| 31-60 min | 34.38        | 22.0           | 25399         |
+| 61-120 min| 39.40        | 24.0           | 12312         |
+| 120+ min  | 49.21        | 35.0          | 7661          |
 
 # Assessment of Missingness
 ## Not Missing at Random (NMAR) Analysis
@@ -111,7 +111,7 @@ Although the scatterplot is somewhat inconclusive, finding the average (mean and
 
 To explore this question, I have used a permuation test with a significance level of 0.05. A permutation is effective in this situation because it is non-parametric, meaning it doesn't rely on assumptions about the underlying distribution. Simulating the null hypothesis by randomly shuffling the labels allows us to discover whether the group assignment is arbitrary or not. 
 
-My test statistic is the difference in mean protein PDV in recipes greater that take greater than 40 minutes to prepare and mean protein PDV in recipes that take less than or equal to 40 minutes to prepare. The difference in means is an effective test statistic because I intend to compare averages.
+My test statistic is the difference in mean protein PDV in recipes that take greater than 40 minutes to prepare and mean protein PDV in recipes that take less than or equal to 40 minutes to prepare. The difference in means is an effective test statistic because I intend to compare averages.
 
 Because my test resulted in an extremely low p-value of 0.0, I reject the null hypothesis. 
 
@@ -129,16 +129,16 @@ Because my test resulted in an extremely low p-value of 0.0, I reject the null h
 
 This is a regression problem with the response variable being the time in minutes. I chose this because the efficiency of cooking is important to me - I enjoy cooking, but I am also busy. I wish to cook efficient recipes. 
 
-I will use R^2 as a metric to evaluate my model. R^2 is effective in this case because it helps measure how well my model explains variation in the response variable (the time it takes to prepare a recipe).
+I will use R² as a metric to evaluate my model. R² is effective in this case because it helps measure how well my model explains variation in the response variable (the time it takes to prepare a recipe).
 
 ## Baseline Model
-This model uses an sklearn pipeline to predict cooking times for recipes based on two quantitative features, the number of steps and calorie content. The pipeline first applies a log transformation to all columns (both features and the target variable) to handle skewness in the data. It then fits a Linear Regression model to predict the transformed cooking time. The dataset is split into training and testing sets, with the model trained on the training data and evaluated using the R² score. Finally, the model's performance is assessed on the test set, providing the test R² score. The test R² score is 0.2129, which is quite low. Because of this low R², the baseline model is not particularly strong.
+This model uses an sci-kit learn pipeline to predict cooking times for recipes based on two quantitative features, the number of steps and calorie content. The pipeline first applies a log transformation to all columns (both features and the target variable) to handle skewness in the data. It then fits a Linear Regression model to predict the transformed cooking time. The dataset is split into training and testing sets, with the model trained on the training data and evaluated using the R² score. Finally, the model's performance is assessed on the test set, providing the test R² score. The test R² score is 0.2129, which is quite low. Because of this low R², the baseline model is not particularly strong.
 
 ## Final Model
 ### Features
-**Average Words Per Step:** This feature was engineered using an Ski-kit learn FunctionTransformer to find the mean amount of words per step in a recipe. The average words per step could suggest the preparation time of a recipe, as more things to do per step could signifiy a more complicated, and thus more time consuming, recipe.
+**Average Words Per Step:** This feature was engineered using an sci-kit learn FunctionTransformer to find the mean amount of words per step in a recipe. The average words per step could suggest the preparation time of a recipe, as more things to do per step could signifiy a more complicated, and thus more time consuming, recipe.
 
-**"Easy" Tags:** This feature was engineered using an Ski-kit learn FunctionTransformer to find recipe tags that include "easy". Recipes that are tagged as "easy" likely take less time to prepare. 
+**"Easy" Tags:** This feature was engineered using a sci-kit learn FunctionTransformer to find recipe tags that include "easy". Recipes that are tagged as "easy" likely take less time to prepare. 
 
 **Description Length:** This feature was created by finding the length of the description. A longer description might signify a more complicated recipe which could take more time to prepare.
 
@@ -171,7 +171,7 @@ The R² score from this model is 0.2431, which is an improvement from the baseli
 
 The evaluation metric that I used is root mean squared error (RMSE).
 
-**Null Hypothesis:** The model is fair. Its RMSE for high calorie and low calorie recipes are roughtly the same, and any differences are due to random chance.
+**Null Hypothesis:** The model is fair. Its RMSE for high calorie and low calorie recipes are roughly the same, and any differences are due to random chance.
 
 **Alternative Hypothesis:** The model is unfair. Its RMSE for high calorie recipes is lower than its precision for low calorie recipes.
 
